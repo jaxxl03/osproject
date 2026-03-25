@@ -1,5 +1,5 @@
 
-_test:     file format elf32-i386
+_test_wait:     file format elf32-i386
 
 
 Disassembly of section .text:
@@ -18,108 +18,102 @@ int main(int argc, char *argv[])
    b:	89 e5                	mov    %esp,%ebp
    d:	51                   	push   %ecx
    e:	83 ec 24             	sub    $0x24,%esp
-    int pid, child_pid;
-    char *message;
-    int n, status, exit_code;
+	int pid, child_pid;
+	char *message;
+	int n, status, exit_code;
 
-    pid = fork();
+	pid = fork();
   11:	e8 38 03 00 00       	call   34e <fork>
   16:	89 45 e8             	mov    %eax,-0x18(%ebp)
-    switch (pid)
+        switch(pid)	{
   19:	83 7d e8 ff          	cmpl   $0xffffffff,-0x18(%ebp)
   1d:	74 08                	je     27 <main+0x27>
   1f:	83 7d e8 00          	cmpl   $0x0,-0x18(%ebp)
   23:	74 21                	je     46 <main+0x46>
   25:	eb 36                	jmp    5d <main+0x5d>
-    {
-        case -1:
-            printf(2, "fork failed\n");
+		case -1:
+			printf(2,"fork failed");
   27:	83 ec 08             	sub    $0x8,%esp
   2a:	68 91 08 00 00       	push   $0x891
   2f:	6a 02                	push   $0x2
   31:	e8 a4 04 00 00       	call   4da <printf>
   36:	83 c4 10             	add    $0x10,%esp
-            exit2(1);
+			exit2(0);
   39:	83 ec 0c             	sub    $0xc,%esp
-  3c:	6a 01                	push   $0x1
+  3c:	6a 00                	push   $0x0
   3e:	e8 bb 03 00 00       	call   3fe <exit2>
   43:	83 c4 10             	add    $0x10,%esp
-        case 0: // 자식 프로세스
-            message = "This is the child";
-  46:	c7 45 f4 9e 08 00 00 	movl   $0x89e,-0xc(%ebp)
-            n = 5;
+		case 0:
+			message = "This is the child";
+  46:	c7 45 f4 9d 08 00 00 	movl   $0x89d,-0xc(%ebp)
+			n = 5;
   4d:	c7 45 f0 05 00 00 00 	movl   $0x5,-0x10(%ebp)
-            exit_code = 37; // 자식의 유언 번호
+			exit_code = 37;
   54:	c7 45 ec 25 00 00 00 	movl   $0x25,-0x14(%ebp)
-            break;
+			break;
   5b:	eb 16                	jmp    73 <main+0x73>
-        default: // 부모 프로세스
-            message = "This is the parent";
-  5d:	c7 45 f4 b0 08 00 00 	movl   $0x8b0,-0xc(%ebp)
-            n = 3;
+		default:
+			message = "This is the parent";
+  5d:	c7 45 f4 af 08 00 00 	movl   $0x8af,-0xc(%ebp)
+			n = 3;
   64:	c7 45 f0 03 00 00 00 	movl   $0x3,-0x10(%ebp)
-            exit_code = 0;
+			exit_code = 0;
   6b:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-            break;
+			break;
   72:	90                   	nop
-    }
-
-    // n번 반복하면서 메시지 출력
-    for(; n > 0; n--) {
+	}
+	for(; n > 0; n--) {
   73:	eb 26                	jmp    9b <main+0x9b>
-        printf(1, "%s\n", message);
+		printf(1, "%s\n", message);
   75:	83 ec 04             	sub    $0x4,%esp
   78:	ff 75 f4             	push   -0xc(%ebp)
-  7b:	68 c3 08 00 00       	push   $0x8c3
+  7b:	68 c2 08 00 00       	push   $0x8c2
   80:	6a 01                	push   $0x1
   82:	e8 53 04 00 00       	call   4da <printf>
   87:	83 c4 10             	add    $0x10,%esp
-        sleep(1);
+		sleep(1);
   8a:	83 ec 0c             	sub    $0xc,%esp
   8d:	6a 01                	push   $0x1
   8f:	e8 52 03 00 00       	call   3e6 <sleep>
   94:	83 c4 10             	add    $0x10,%esp
-    for(; n > 0; n--) {
+	for(; n > 0; n--) {
   97:	83 6d f0 01          	subl   $0x1,-0x10(%ebp)
   9b:	83 7d f0 00          	cmpl   $0x0,-0x10(%ebp)
   9f:	7f d4                	jg     75 <main+0x75>
-    }
+	}
 
-    // 부모만 실행하는 구간 (자식이 죽을 때까지 기다림)
-    if (pid != 0) {
+	if (pid != 0) {
   a1:	83 7d e8 00          	cmpl   $0x0,-0x18(%ebp)
   a5:	74 3d                	je     e4 <main+0xe4>
-        child_pid = wait2(&status); 
+		child_pid = wait2(&status);
   a7:	83 ec 0c             	sub    $0xc,%esp
   aa:	8d 45 e0             	lea    -0x20(%ebp),%eax
   ad:	50                   	push   %eax
   ae:	e8 43 03 00 00       	call   3f6 <wait2>
   b3:	83 c4 10             	add    $0x10,%esp
   b6:	89 45 e4             	mov    %eax,-0x1c(%ebp)
-        printf(1, "Child has finished: PID = %d\n", child_pid);
+		printf(1, "Child has finished: PID = %d\n", child_pid);
   b9:	83 ec 04             	sub    $0x4,%esp
   bc:	ff 75 e4             	push   -0x1c(%ebp)
-  bf:	68 c7 08 00 00       	push   $0x8c7
+  bf:	68 c6 08 00 00       	push   $0x8c6
   c4:	6a 01                	push   $0x1
   c6:	e8 0f 04 00 00       	call   4da <printf>
   cb:	83 c4 10             	add    $0x10,%esp
-        printf(1, "Child exited with code %d\n", status); 
+		printf(1, "Child exited with code %d\n", status);
   ce:	8b 45 e0             	mov    -0x20(%ebp),%eax
   d1:	83 ec 04             	sub    $0x4,%esp
   d4:	50                   	push   %eax
-  d5:	68 e5 08 00 00       	push   $0x8e5
+  d5:	68 e4 08 00 00       	push   $0x8e4
   da:	6a 01                	push   $0x1
   dc:	e8 f9 03 00 00       	call   4da <printf>
   e1:	83 c4 10             	add    $0x10,%esp
-    }
-
-    exit2(exit_code); 
+	}
+	exit2(exit_code);
   e4:	83 ec 0c             	sub    $0xc,%esp
   e7:	ff 75 ec             	push   -0x14(%ebp)
   ea:	e8 0f 03 00 00       	call   3fe <exit2>
   ef:	83 c4 10             	add    $0x10,%esp
   f2:	b8 00 00 00 00       	mov    $0x0,%eax
-}
   f7:	8b 4d fc             	mov    -0x4(%ebp),%ecx
   fa:	c9                   	leave
   fb:	8d 61 fc             	lea    -0x4(%ecx),%esp
@@ -851,7 +845,7 @@ printf(int fd, char *fmt, ...)
  5ae:	83 7d f4 00          	cmpl   $0x0,-0xc(%ebp)
  5b2:	75 25                	jne    5d9 <printf+0xff>
           s = "(null)";
- 5b4:	c7 45 f4 00 09 00 00 	movl   $0x900,-0xc(%ebp)
+ 5b4:	c7 45 f4 ff 08 00 00 	movl   $0x8ff,-0xc(%ebp)
         while(*s != 0){
  5bb:	eb 1c                	jmp    5d9 <printf+0xff>
           putc(fd, *s);

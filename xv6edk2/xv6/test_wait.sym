@@ -1,4 +1,4 @@
-00000000 test.c
+00000000 test_wait.c
 00000000 ulib.c
 000000ff stosb
 00000000 printf.c

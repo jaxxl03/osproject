@@ -190,7 +190,8 @@ UPROGS=\
 	_wc\
 	_zombie\
 	_hello\
-	_test
+	_test_wait\
+	_SID
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
 
