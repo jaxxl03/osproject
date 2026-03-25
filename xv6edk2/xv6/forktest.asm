@@ -44,7 +44,7 @@ forktest(void)
 
   printf(1, "fork test\n");
   37:	83 ec 08             	sub    $0x8,%esp
-  3a:	68 30 04 00 00       	push   $0x430
+  3a:	68 40 04 00 00       	push   $0x440
   3f:	6a 01                	push   $0x1
   41:	e8 ba ff ff ff       	call   0 <printf>
   46:	83 c4 10             	add    $0x10,%esp
@@ -79,7 +79,7 @@ forktest(void)
     printf(1, "fork claimed to work N times!\n", N);
   84:	83 ec 04             	sub    $0x4,%esp
   87:	68 e8 03 00 00       	push   $0x3e8
-  8c:	68 3c 04 00 00       	push   $0x43c
+  8c:	68 4c 04 00 00       	push   $0x44c
   91:	6a 01                	push   $0x1
   93:	e8 68 ff ff ff       	call   0 <printf>
   98:	83 c4 10             	add    $0x10,%esp
@@ -94,7 +94,7 @@ forktest(void)
   a7:	79 17                	jns    c0 <forktest+0x93>
       printf(1, "wait stopped early\n");
   a9:	83 ec 08             	sub    $0x8,%esp
-  ac:	68 5b 04 00 00       	push   $0x45b
+  ac:	68 6b 04 00 00       	push   $0x46b
   b1:	6a 01                	push   $0x1
   b3:	e8 48 ff ff ff       	call   0 <printf>
   b8:	83 c4 10             	add    $0x10,%esp
@@ -113,7 +113,7 @@ forktest(void)
   d2:	74 17                	je     eb <forktest+0xbe>
     printf(1, "wait got too many\n");
   d4:	83 ec 08             	sub    $0x8,%esp
-  d7:	68 6f 04 00 00       	push   $0x46f
+  d7:	68 7f 04 00 00       	push   $0x47f
   dc:	6a 01                	push   $0x1
   de:	e8 1d ff ff ff       	call   0 <printf>
   e3:	83 c4 10             	add    $0x10,%esp
@@ -123,7 +123,7 @@ forktest(void)
 
   printf(1, "fork test OK\n");
   eb:	83 ec 08             	sub    $0x8,%esp
-  ee:	68 82 04 00 00       	push   $0x482
+  ee:	68 92 04 00 00       	push   $0x492
   f3:	6a 01                	push   $0x1
   f5:	e8 06 ff ff ff       	call   0 <printf>
   fa:	83 c4 10             	add    $0x10,%esp
@@ -658,3 +658,15 @@ SYSCALL(uptime)
  427:	b8 0e 00 00 00       	mov    $0xe,%eax
  42c:	cd 40                	int    $0x40
  42e:	c3                   	ret    
+
+0000042f <wait2>:
+SYSCALL(wait2)
+ 42f:	b8 17 00 00 00       	mov    $0x17,%eax
+ 434:	cd 40                	int    $0x40
+ 436:	c3                   	ret    
+
+00000437 <exit2>:
+SYSCALL(exit2)
+ 437:	b8 16 00 00 00       	mov    $0x16,%eax
+ 43c:	cd 40                	int    $0x40
+ 43e:	c3                   	ret    
